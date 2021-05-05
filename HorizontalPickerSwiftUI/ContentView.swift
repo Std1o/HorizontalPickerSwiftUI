@@ -13,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false, content: {
             HStack {
-                ForEach(0..<10, id: \.self) { idx in
+                ForEach(0..<7, id: \.self) { idx in
                     VStack {
                         if selected == idx {
                             Text(dayNames[idx % 7]).font(.caption2)
@@ -24,7 +24,7 @@ struct ContentView: View {
                                     .frame(width: 40, height: 40)
                                     .cornerRadius(CGFloat(roundedRadius))
                                     .padding(.horizontal, 4)
-                                Text("\(idx)")
+                                Text("\(getDays()[idx])")
                                     .foregroundColor(Color.white)
                             }
                         } else {
@@ -37,7 +37,7 @@ struct ContentView: View {
                                     .frame(width: 40, height: 40)
                                     .cornerRadius(CGFloat(roundedRadius))
                                     .padding(.horizontal, 4)
-                                Text("\(idx)")
+                                Text("\(getDays()[idx])")
                                     .foregroundColor(Color.black)
                             }
                         }
@@ -49,6 +49,26 @@ struct ContentView: View {
                 }
             }
         }).frame(minWidth: 0, maxWidth: 400, minHeight: 0, maxHeight: 30)
+    }
+    
+    func getDays() -> [String] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let dayOfWeek = calendar.component(.weekday, from: today)
+        let weekdays = calendar.range(of: .weekday, in: .weekOfYear, for: today)!
+        let days = (weekdays.lowerBound ..< weekdays.upperBound)
+            .compactMap { calendar.date(byAdding: .day, value: $0 - dayOfWeek, to: today) }
+        
+        let dayIndexFormatter = DateFormatter()
+        let dayFormatter = DateFormatter()
+        dayIndexFormatter.dateFormat = "e"
+        dayFormatter.dateFormat = "dd"
+        var resultDays = [String]()
+        for date in days {
+            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date)
+            resultDays.append(dayFormatter.string(from: tomorrow!))
+        }
+        return resultDays
     }
 }
 
