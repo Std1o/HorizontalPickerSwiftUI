@@ -8,31 +8,38 @@ struct ContentView: View {
     @State var selected: Int = -1
     
     var roundedRadius: Int = 8
+    var dayNames = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"]
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false, content: {
             HStack {
                 ForEach(0..<10, id: \.self) { idx in
-                    ZStack {
+                    VStack {
                         if selected == idx {
-                            Rectangle()
-                                //.fill(self.bgndColor)
-                                .fill(Color.black)
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(CGFloat(roundedRadius))
-                                .padding(.horizontal, 4)
-                            Text("\(idx)")
-                                .foregroundColor(Color.white)
+                            Text(dayNames[idx % 7]).font(.caption2)
+                            ZStack {
+                                Rectangle()
+                                    //.fill(self.bgndColor)
+                                    .fill(Color.black)
+                                    .frame(width: 40, height: 40)
+                                    .cornerRadius(CGFloat(roundedRadius))
+                                    .padding(.horizontal, 4)
+                                Text("\(idx)")
+                                    .foregroundColor(Color.white)
+                            }
                         } else {
-                            Rectangle()
-                                //.fill(self.bgndColor)
-                                .fill(Color.white)
-                                //.colorInvert()
-                                .frame(width: 40, height: 40)
-                                .cornerRadius(CGFloat(roundedRadius))
-                                .padding(.horizontal, 4)
-                            Text("\(idx)")
-                                .foregroundColor(Color.black)
+                            Text(dayNames[idx % 7]).font(.caption2)
+                            ZStack {
+                                Rectangle()
+                                    //.fill(self.bgndColor)
+                                    .fill(Color.white)
+                                    //.colorInvert()
+                                    .frame(width: 40, height: 40)
+                                    .cornerRadius(CGFloat(roundedRadius))
+                                    .padding(.horizontal, 4)
+                                Text("\(idx)")
+                                    .foregroundColor(Color.black)
+                            }
                         }
                     }
                     .onTapGesture {
